@@ -13,7 +13,14 @@ my $builder = Module::Build->new(
     requires => {
         'perl' => '5.8.1',
         'Carp' => 0,
+        'Fcntl' => 0,
+        'Log::Handler' => 0,
+        'Log::Handler::Output::File' => 0.06,
+        'Log::Stamper' => 0,
     },
+    recommends => {
+        'Time::HiRes' => 0,
+    }
     add_to_cleanup      => [ 'Log-Handler-Output-File-Stamper-*' ],
     meta_merge     => {
       resources => {

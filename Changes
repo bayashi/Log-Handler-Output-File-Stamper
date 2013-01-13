@@ -1,4 +1,4 @@
 Revision history for Perl extension Log::Handler::Output::File::Stamper
 
-0.01    Sun Jan 13 09:59:51 2013
-        - original version
+0.01    Sun Jan 13 15:54:37 JST 2013
+        - github release: just work. There are NOT enough tests.
