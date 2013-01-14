@@ -92,7 +92,7 @@ use Log::Stamper;
 
 our @ISA = qw/Log::Handler::Output::File/;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 our $ERRSTR  = "";
 
 our $TIME_HIRES_AVAILABLE = undef;
