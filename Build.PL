@@ -22,7 +22,7 @@ my $builder = Module::Build->new(
     },
     recommends => {
         'Time::HiRes' => 0,
-    }
+    },
     add_to_cleanup      => [ 'Log-Handler-Output-File-Stamper-*' ],
     meta_merge     => {
       resources => {
