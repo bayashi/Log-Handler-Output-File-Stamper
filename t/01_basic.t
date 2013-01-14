@@ -1,38 +1,43 @@
 use strict;
 use warnings;
 use Test::More 0.88;
-use File::Temp qw/ tempfile tempdir /;
-
+use File::Spec;
+use POSIX 'strftime';
 use Log::Handler;
 use Log::Handler::Output::File::Stamper;
 
-ok 1;
+our $LOG = File::Spec->catfile('t', '.foo.log.'.strftime("%Y%m%d", localtime));
+END { unlink($LOG); }
 
-if ($ENV{AUTHOR_TEST}) {
+{
+    my $stamp = Log::Handler::Output::File::Stamper->new(
+        filename => [ 't', '.foo.log.%d{yyyyMMdd}' ],
+    );
+
+    is ref($stamp), 'Log::Handler::Output::File::Stamper', 'new';
+}
+
+{
+    my $log = Log::Handler->new;
+    $log->add(
+        'Log::Handler::Output::File::Stamper' => +{
+            filename => [ 't', '.foo.log.%d{yyyyMMdd}' ],
+        }
+    );
+    is ref($log), 'Log::Handler', 'handler';
+    is(
+        ref($log->{outputs}[0]{output}),
+        'Log::Handler::Output::File::Stamper',
+        'added stamper'
+    );
 
     {
-        my $stamp = Log::Handler::Output::File::Stamper->new(
-            filename => 'foo.log.%d{yyyyMMdd}'
-        );
-
-        is ref($stamp), 'Log::Handler::Output::File::Stamper', 'new';
+        $log->fatal("hoge");
+        open my $fh, '<', $LOG or die "could not open '$LOG': $!";
+        my $log = <$fh>;
+        close $fh;
+        like $log, qr/\[FATAL\] hoge/, 'log content';
     }
-
-    {
-        my $log = Log::Handler->new;
-        $log->add(
-            'Log::Handler::Output::File::Stamper' => +{
-                filename => 'foo.log.%d{yyyyMMdd}'
-            }
-        );
-        is ref($log), 'Log::Handler', 'handler';
-        is(
-            ref($log->{outputs}[0]{output}),
-            'Log::Handler::Output::File::Stamper',
-            'added stamper'
-        );
-    }
-
 }
 
 done_testing;
