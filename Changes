@@ -1,5 +1,8 @@
 Revision history for Perl extension Log::Handler::Output::File::Stamper
 
+0.03    Sat May  4 10:37:26 JST 2013
+        - removed warnings
+
 0.02    Mon Jan 14 11:20:56 JST 2013
         - fixed basic test
         - fixed Build.PL
